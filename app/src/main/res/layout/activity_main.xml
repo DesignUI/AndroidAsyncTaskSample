@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:gravity="center"
                 tools:context=".MainActivity"
                 android:orientation="horizontal">
 
@@ -11,6 +11,24 @@
         android:layout_height="40dp"
         android:text="New Text"
         android:id="@+id/txtResult"
+        android:onClick="cancelAsyncTask"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="20sp"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="Start"
+        android:id="@+id/start"
+        android:layout_weight="1"
+        android:onClick="startAsyncTask"
+        android:gravity="center"
+        android:textSize="20sp"/>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="Cancel"
+        android:id="@+id/cancel"
         android:layout_weight="1"
         android:gravity="center"
         android:textSize="20sp"/>

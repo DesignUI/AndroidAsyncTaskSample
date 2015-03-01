@@ -14,15 +14,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+    public void startAsyncTask(View v){
         TextView txtResult = (TextView)this.findViewById(R.id.txtResult);
         task = new MyAsyncTask(this, txtResult);
         task.execute("http://www.wings.msn.to/tmp/book.xml");
     }
 
-    public void onClick(View view) {
+    public void cancelAsyncTask(View v){
         task.cancel(true);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
