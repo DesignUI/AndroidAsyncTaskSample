@@ -27,14 +27,14 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
      *2つ目:進捗状況を管理するための情報
      *3つ目:非同期処理の結果の情報
      */
-    private TextView txtResult;//操作対象のTextView
+    private TextView textView;//操作対象のTextView
     private Activity activity;//操作対象のActivity
     private ProgressDialog progress;
 
-    public MyAsyncTask(Activity activity, TextView txtResult) {
+    public MyAsyncTask(Activity activity, TextView textView) {
         super();
         this.activity = activity;//現在のActivityを引数として代入
-        this.txtResult = txtResult;//結果を表示するtextを引数として代入
+        this.textView = textView;//結果を表示するtextを引数として代入
     }
 
     @Override
@@ -71,7 +71,7 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
             if(status == HttpStatus.SC_OK){//成功のとき
                 result = EntityUtils.toString(response.getEntity(), "UTF-8");//getEntityメソッドで、レスポンス本体を取得、それをEntityUtilsクラスのtoStringメソッドで文字列に変換(UTF-8で)する。
             } else {//成功しなかったとき
-                result = ""+ status;
+                result = "Error : "+ status;
             }
         } catch (ClientProtocolException e) {//HTTPプロトコルでのエラーシグナル
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
         }
         for(int j =0 ; j <= 90 ;j++){
             publishProgress(1);//進捗状況をUIスレッドに通知
-            SystemClock.sleep(50);//50ミリ秒(0.05秒待つ)/(擬似的に時間のかかる処理を作っている)
+            SystemClock.sleep(20);//20ミリ秒(0.02秒待つ)/(擬似的に時間のかかる処理を作っている)
         }
         return result;
     }
@@ -94,13 +94,13 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected void onPostExecute(String result) { //非同期処理が終了した際に実行
-        txtResult.setText(result);
+        textView.setText(result);
         progress.dismiss();//プログレスバーを閉じる
     }
 
     @Override
     protected void onCancelled() {
-        txtResult.setText("Transmission canceled");
+        textView.setText("Transmission canceled");
         progress.dismiss();//プログレスバーを閉じる
     }
 

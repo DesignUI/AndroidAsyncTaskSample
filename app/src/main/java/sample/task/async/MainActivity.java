@@ -16,16 +16,16 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity {
 
     MyAsyncTask task;
-    TextView txtResult;
+    TextView textView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txtResult = (TextView)this.findViewById(R.id.txtResult);
+        textView = (TextView)this.findViewById(R.id.txtResult);
     }
 
     public void startAsyncTask(View v){//Startボタンを押したとき
-        task = new MyAsyncTask(this, txtResult);//このアクティビティとTextViewを引数にセットしてインスタンス化
+        task = new MyAsyncTask(this, textView);//このアクティビティとTextViewを引数にセットしてインスタンス化
         task.execute("http://life-is-tech.com/");//executeメソッドにはdoInBackground命令が利用する引数をセット
     }
 
