@@ -28,17 +28,17 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
 
     public MyAsyncTask(Activity activity, TextView txtResult) {
         super();
-        this.activity = activity;
-        this.txtResult = txtResult;
+        this.activity = activity;//現在のActivityを引数として代入
+        this.txtResult = txtResult;//結果を表示するtextを引数として代入
     }
 
     @Override
     protected void onPreExecute() {
-        progress = new ProgressDialog(activity);
-        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progress.setMessage("通信中...");
-        progress.setMax(100);
-        progress.setProgress(0);
+        progress = new ProgressDialog(activity);//progressbarのインスタンス化
+        progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);//Dialogに表示するProgressBarの向きを決める
+        progress.setMessage("transmitting...");
+        progress.setMax(100);//progressbarの最大値を100にセットする
+        progress.setProgress(0);//progressbarの初期値を0にセットする
         progress.setButton(DialogInterface.BUTTON_NEGATIVE,"キャンセル",
                 new DialogInterface.OnClickListener() {
                     @Override

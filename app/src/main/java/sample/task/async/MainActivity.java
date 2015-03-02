@@ -9,19 +9,22 @@ import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
+
     MyAsyncTask task;
+    TextView txtResult;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
-    public void startAsyncTask(View v){
-        TextView txtResult = (TextView)this.findViewById(R.id.txtResult);
-        task = new MyAsyncTask(this, txtResult);
-        task.execute("http://www.wings.msn.to/tmp/book.xml");
+        txtResult = (TextView)this.findViewById(R.id.txtResult);
     }
 
-    public void cancelAsyncTask(View v){
+    public void startAsyncTask(View v){//Startボタンを押したとき
+        task = new MyAsyncTask(this, txtResult);
+        task.execute("http://life-is-tech.com/");
+    }
+
+    public void cancelAsyncTask(View v){//Cancelボタンを押したとき
         task.cancel(true);
     }
     @Override
