@@ -25,12 +25,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void startAsyncTask(View v){//Startボタンを押したとき
-        task = new MyAsyncTask(this, txtResult);
+        task = new MyAsyncTask(this, txtResult);//このアクティビティとTextViewを引数にセットしてインスタンス化
         task.execute("http://life-is-tech.com/");//executeメソッドにはdoInBackground命令が利用する引数をセット
     }
 
     public void cancelAsyncTask(View v){//Cancelボタンを押したとき
-        task.cancel(true);//asynctaskをキャンセル
+        task.cancel(true);//AsyncTaskをキャンセル
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

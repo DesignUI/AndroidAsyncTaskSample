@@ -22,6 +22,11 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 
 public class MyAsyncTask extends AsyncTask<String, Integer, String> {
+    /*AsyncTask<>内の
+     *1つ目:非同期処理の実行時にメインスレッド側から与える情報
+     *2つ目:進捗状況を管理するための情報
+     *3つ目:非同期処理の結果の情報
+     */
     private TextView txtResult;//操作対象のTextView
     private Activity activity;//操作対象のActivity
     private ProgressDialog progress;
@@ -39,7 +44,7 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
         progress.setMessage("transmitting...");//Progressbarに設定する文字列を設定する。
         progress.setMax(100);//progressbarの最大値を100にセットする
         progress.setProgress(0);//progressbarの初期値を0にセットする
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE,"キャンセル",//Dialogにキャンセルボタンをセット
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE,"Cancel",//Dialogにキャンセルボタンをセット
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -54,7 +59,7 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
     protected String doInBackground(String... params) {//引数として受け取ったURLをキーにページの取得を試みます。
         String result = null;//文字列を初期化
         for(int j =0 ; j <= 10 ;j++){
-            publishProgress(1);
+            publishProgress(1);//進捗状況をUIスレッドに通知
             SystemClock.sleep(20);//20ミリ秒(0.02秒待つ)/(擬似的に時間のかかる処理を作っている)
         }
 
@@ -76,7 +81,7 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
             e.printStackTrace();
         }
         for(int j =0 ; j <= 90 ;j++){
-            publishProgress(1);
+            publishProgress(1);//進捗状況をUIスレッドに通知
             SystemClock.sleep(50);//50ミリ秒(0.05秒待つ)/(擬似的に時間のかかる処理を作っている)
         }
         return result;
