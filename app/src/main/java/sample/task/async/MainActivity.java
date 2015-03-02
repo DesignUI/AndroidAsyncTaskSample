@@ -1,5 +1,10 @@
 package sample.task.async;
 
+/**
+ * Created by hirokinaganuma on 2015/03/02.
+ */
+
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -21,11 +26,11 @@ public class MainActivity extends ActionBarActivity {
 
     public void startAsyncTask(View v){//Startボタンを押したとき
         task = new MyAsyncTask(this, txtResult);
-        task.execute("http://life-is-tech.com/");
+        task.execute("http://life-is-tech.com/");//executeメソッドにはdoInBackground命令が利用する引数をセット
     }
 
     public void cancelAsyncTask(View v){//Cancelボタンを押したとき
-        task.cancel(true);
+        task.cancel(true);//asynctaskをキャンセル
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

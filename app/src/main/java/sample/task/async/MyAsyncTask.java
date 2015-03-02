@@ -1,7 +1,7 @@
 package sample.task.async;
 
 /**
- * Created by hirokinaganuma on 2015/03/01.
+ * Created by hirokinaganuma on 2015/03/02.
  */
 
 import android.app.Activity;
@@ -22,8 +22,8 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 
 public class MyAsyncTask extends AsyncTask<String, Integer, String> {
-    private TextView txtResult;
-    private Activity activity;
+    private TextView txtResult;//操作対象のTextView
+    private Activity activity;//操作対象のActivity
     private ProgressDialog progress;
 
     public MyAsyncTask(Activity activity, TextView txtResult) {
@@ -33,65 +33,70 @@ public class MyAsyncTask extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected void onPreExecute() {
+    protected void onPreExecute() {//タスクが実行された直後に、UIスレッドで呼び出される。非同期処理の直前にダイアログを起動
         progress = new ProgressDialog(activity);//progressbarのインスタンス化
         progress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);//Dialogに表示するProgressBarの向きを決める
-        progress.setMessage("transmitting...");
+        progress.setMessage("transmitting...");//Progressbarに設定する文字列を設定する。
         progress.setMax(100);//progressbarの最大値を100にセットする
         progress.setProgress(0);//progressbarの初期値を0にセットする
-        progress.setButton(DialogInterface.BUTTON_NEGATIVE,"キャンセル",
+        progress.setButton(DialogInterface.BUTTON_NEGATIVE,"キャンセル",//Dialogにキャンセルボタンをセット
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MyAsyncTask.this.cancel(true);
                     }
                 });
-        progress.show();
+        progress.show();//progressbarを表示
     }
 
 
     @Override
-    protected String doInBackground(String... params) {
-        String result = null;
-        SystemClock.sleep(1000);
-        publishProgress(30);
+    protected String doInBackground(String... params) {//引数として受け取ったURLをキーにページの取得を試みます。
+        String result = null;//文字列を初期化
+        for(int j =0 ; j <= 10 ;j++){
+            publishProgress(1);
+            SystemClock.sleep(20);//20ミリ秒(0.02秒待つ)/(擬似的に時間のかかる処理を作っている)
+        }
 
         try {
-            HttpGet req = new HttpGet(params[0]);
-            DefaultHttpClient client = new DefaultHttpClient();
-            HttpResponse res = client.execute(req);
-            int status = res.getStatusLine().getStatusCode();
-            if(status == HttpStatus.SC_OK){
-                result = EntityUtils.toString(res.getEntity(), "UTF-8");
-            } else {
-                result = "ステータスコード：" + status;
+            HttpGet reqest = new HttpGet(params[0]);//(引数のURLからHttpGetクラスでページを要求する)リクエスト情報を表す
+            DefaultHttpClient client = new DefaultHttpClient();//サーバーに送信する役割を持つDefaultHttpClientクラスのインスタンスを生成
+            HttpResponse response = client.execute(reqest);//executeメソッドにHttpGetクラスのオブジェクトを渡すことでサーバーにリクエストが送信されます。戻り値はHttpResponseクラスのオブジェクトに格納される。
+            int status = response.getStatusLine().getStatusCode();//Httpステータスを取得(200 OKとか404 エラーとか)
+            if(status == HttpStatus.SC_OK){//成功のとき
+                result = EntityUtils.toString(response.getEntity(), "UTF-8");//getEntityメソッドで、レスポンス本体を取得、それをEntityUtilsクラスのtoStringメソッドで文字列に変換(UTF-8で)する。
+            } else {//成功しなかったとき
+                result = ""+ status;
             }
-        } catch (ClientProtocolException e) {
+        } catch (ClientProtocolException e) {//HTTPプロトコルでのエラーシグナル
             e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (ParseException e) {//解析中に予想外のエラーが発生したことを表すシグナル
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (IOException e) {//入出力例外のシグナル
             e.printStackTrace();
         }
-        publishProgress(70);
+        for(int j =0 ; j <= 90 ;j++){
+            publishProgress(1);
+            SystemClock.sleep(50);//50ミリ秒(0.05秒待つ)/(擬似的に時間のかかる処理を作っている)
+        }
         return result;
     }
 
     @Override
-    protected void onProgressUpdate(Integer... values) {
-        progress.incrementProgressBy(values[0]);
+    protected void onProgressUpdate(Integer... values) {//publishProgressによる進捗状況の通知
+        progress.incrementProgressBy(values[0]);//この通知に応じてダイアログの値を加算(引数に与えられた値を加算/ex 1ずつ加算)
     }
 
     @Override
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(String result) { //非同期処理が終了した際に実行
         txtResult.setText(result);
-        progress.dismiss();
+        progress.dismiss();//プログレスバーを閉じる
     }
 
     @Override
     protected void onCancelled() {
-        txtResult.setText("キャンセルされました。");
-        progress.dismiss();
+        txtResult.setText("Transmission canceled");
+        progress.dismiss();//プログレスバーを閉じる
     }
 
 
