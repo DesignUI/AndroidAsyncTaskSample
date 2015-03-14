@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -17,20 +18,24 @@ public class MainActivity extends ActionBarActivity {
 
     MyAsyncTask task;
     TextView textView;
+    EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = (TextView)this.findViewById(R.id.txtResult);
+        editText=(EditText)findViewById(R.id.editText);
     }
 
     public void startAsyncTask(View v){//Startボタンを押したとき
         task = new MyAsyncTask(this, textView);//このアクティビティとTextViewを引数にセットしてインスタンス化
-        task.execute("http://life-is-tech.com/");//executeメソッドにはdoInBackground命令が利用する引数をセット
+        String args = editText.getText().toString();
+        task.execute(args);//executeメソッドにはdoInBackground命令が利用する引数をセット
     }
 
     public void cancelAsyncTask(View v){//Cancelボタンを押したとき
         task.cancel(true);//AsyncTaskをキャンセル
+        textView.setText("");
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
